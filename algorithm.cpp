@@ -18,7 +18,8 @@ namespace Algorithm {
         }
 
         // The steps of the algorithm
-        for(int step = 2; step <= 3; ++step) {
+        uint max_steps = gpd->size()*gpd->size() - gpd->size();
+        for(int step = 2; step <= max_steps; ++step) {
             for(int i = 0; i < gpd->size(); ++i) {
                 for(int j = 0; j < gpd->size(); ++j) {
                     if(i >= j) continue;
