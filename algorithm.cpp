@@ -17,8 +17,10 @@ namespace Algorithm {
             algo_tb->set(i, i, 1);
         }
 
+        uint bad_pairs = 0; // this is how we check sr
+
         // The steps of the algorithm
-        uint max_steps = gpd->size()*gpd->size() - gpd->size();
+        uint max_steps = (gpd->size()*gpd->size() - gpd->size()) / 2;
         for(int step = 2; step <= max_steps; ++step) {
             for(int i = 0; i < gpd->size(); ++i) {
                 for(int j = 0; j < gpd->size(); ++j) {
@@ -36,6 +38,7 @@ namespace Algorithm {
                             && algo_tb->get(i, j) == 0) {
 
                             algo_tb->set(i, j, step);
+                            ++bad_pairs;
                         }
 
                         if((algo_tb->get(k_x, k_y) == step-1
@@ -43,13 +46,14 @@ namespace Algorithm {
                             && algo_tb->get(i, j) == 0) {
 
                             algo_tb->set(i, j, step);
+                            ++bad_pairs;
                         }
                     }
                 }
             }
         }
 
-        return true;
+        return (bad_pairs != max_steps);
     }
 
 } // end of namespace Algorithm
