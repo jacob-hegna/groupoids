@@ -56,7 +56,18 @@ uint Groupoid::size() {
 std::string Groupoid::to_str() {
     std::stringstream ss;
 
+    ss << "* | ";
     for(int i = 0; i < m_size; ++i) {
+        ss << i << " ";
+    }
+    ss << std::endl << "--+";
+    for(int i = 0; i < m_size; ++i) {
+        ss << "--";
+    }
+    ss << std::endl;
+
+    for(int i = 0; i < m_size; ++i) {
+        ss << i << " | ";
         for(int j = 0; j < m_size; ++j) {
             ss << m_table[i][j] << " ";
         }
