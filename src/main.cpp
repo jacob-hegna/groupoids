@@ -71,6 +71,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    // this might be the problem
     if(optind >= argc && !help_shown) {
         std::cout << help_short << std::endl;
         return 1;

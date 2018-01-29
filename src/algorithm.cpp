@@ -1,5 +1,7 @@
 #include "algorithm.h"
 
+#include <vector>
+
 namespace Algorithm {
 
     // Clean this mess up
@@ -54,6 +56,10 @@ namespace Algorithm {
         }
 
         return (bad_pairs != max_steps);
+    }
+
+    double ac_beta(GroupoidPtr gpd, std::vector<uint> d_vec, uint result, uint height) {
+
     }
 
 } // end of namespace Algorithm
