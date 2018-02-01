@@ -32,6 +32,13 @@ Groupoid::Groupoid(std::vector<std::vector<uint>> table)
     return groupoid;
 }
 
+// this function is just to make the notation consistent
+/* static */ GroupoidPtr Groupoid::from_vector(std::vector<std::vector<uint>> table) {
+    return std::make_shared<Groupoid>(table);
+}
+
+
+
 bool Groupoid::set(uint a, uint b, uint ab) {
     if(a >= m_size || b >= m_size) {
         return false;

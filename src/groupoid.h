@@ -14,6 +14,7 @@ public:
     Groupoid(std::vector<std::vector<uint>> table);
 
     static std::shared_ptr<Groupoid> from_random(uint size);
+    static std::shared_ptr<Groupoid> from_vector(std::vector<std::vector<uint>> table);
 
     bool set(uint a, uint b, uint ab);
     uint get(uint a, uint b);
