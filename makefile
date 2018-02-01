@@ -35,3 +35,6 @@ $(BUILDDIR):
 
 clean:
 	rm $(BUILDDIR)*
+
+graph:
+	dot -Tpng graph.dot -o graph.png
