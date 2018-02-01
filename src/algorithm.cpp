@@ -1,5 +1,8 @@
 #include "algorithm.h"
 
+#include <map>
+#include <iostream>
+#include <fstream>
 #include <vector>
 
 namespace Algorithm {
@@ -26,6 +29,10 @@ namespace Algorithm {
         for(int step = 2; step <= max_steps; ++step) {
             for(int i = 0; i < gpd->size(); ++i) {
                 for(int j = 0; j < gpd->size(); ++j) {
+                    /*if(bad_pairs == max_steps) {
+                        return false;
+                    }*/
+
                     if(i >= j) continue;
 
                     for(int k = 0; k < gpd->size(); ++k) {
@@ -35,16 +42,20 @@ namespace Algorithm {
                         auto y_k = gpd->get(j, k);
                         auto k_y = gpd->get(k, j);
 
-                        if((algo_tb->get(x_k, y_k) == step-1
-                            || algo_tb->get(y_k, x_k) == step-1)
+                        if(((algo_tb->get(x_k, y_k) < step
+                             && algo_tb->get(x_k, y_k) != 0)
+                            || (algo_tb->get(y_k, x_k) < step
+                                && algo_tb->get(y_k, x_k) != 0))
                             && algo_tb->get(i, j) == 0) {
 
                             algo_tb->set(i, j, step);
                             ++bad_pairs;
                         }
 
-                        if((algo_tb->get(k_x, k_y) == step-1
-                            || algo_tb->get(k_y, k_x) == step-1)
+                        if(((algo_tb->get(k_x, k_y) < step
+                             && algo_tb->get(k_x, k_y) != 0)
+                            || (algo_tb->get(k_y, k_x) < step
+                                && algo_tb->get(k_y, k_x) != 0))
                             && algo_tb->get(i, j) == 0) {
 
                             algo_tb->set(i, j, step);
@@ -58,8 +69,69 @@ namespace Algorithm {
         return (bad_pairs != max_steps);
     }
 
-    double ac_beta(GroupoidPtr gpd, std::vector<uint> d_vec, uint result, uint height) {
+    void sr_graph(GroupoidPtr gpd, std::string filename) {
+        auto to_vert = [] (int i, int j) -> std::string {
+            if(i == j) {
+                return "∆" + std::to_string(i);
+            }
+            if(i < j) {
+                return std::to_string(i) + " " + std::to_string(j);
+            } else {
+                return std::to_string(j) + " " + std::to_string(i);
+            }
+        };
 
+        std::ofstream file(filename);
+        file << "digraph G {"
+                  << std::endl
+                  << "\tedge [fontsize=10]"
+                  << std::endl;
+
+        if(file.is_open()) {
+            for(int i = 0; i < gpd->size(); ++i) {
+                for(int j = 0; j < gpd->size(); ++j) {
+                    if(i >= j) continue;
+
+                    std::map<std::string, std::string> edges;
+                    for(int k = 0; k < gpd->size(); ++k) {
+                        edges[to_vert(gpd->get(k, i), gpd->get(k, j))] += "λ<SUB>" + std::to_string(k) + "</SUB>, ";
+                        edges[to_vert(gpd->get(i, k), gpd->get(j, k))] += "ρ<SUB>" + std::to_string(k) + "</SUB>, ";
+/*
+                        file << "\t\""
+                             << to_vert(i, j)
+                             << "\" -> \""
+                             << to_vert(gpd->get(k, i), gpd->get(k, j))
+                             << "\" [label=<F<SUB>"
+                             << k
+                             << "</SUB>>];"
+                             << std::endl;
+
+                        file << "\t\""
+                             << to_vert(i, j)
+                             << "\" -> \""
+                             << to_vert(gpd->get(i, k), gpd->get(j, k))
+                             << "\" [label=<G<SUB>"
+                             << k
+                             << "</SUB>>];"
+                             << std::endl;*/
+                    }
+
+                    for (const auto& kv : edges) {
+                        file << "\t\""
+                             << to_vert(i, j)
+                             << "\" -> \""
+                             << kv.first
+                             << "\" [label=<{"
+                             << kv.second.substr(0, kv.second.length() - 2)
+                             << "}>];"
+                             << std::endl;
+                    }
+                }
+            }
+        }
+
+        file << "}" << std::endl;
+        file.close();
     }
 
 } // end of namespace Algorithm

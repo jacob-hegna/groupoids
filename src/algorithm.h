@@ -5,6 +5,8 @@
 
 namespace Algorithm {
     bool check_sr(GroupoidPtr gpd, GroupoidPtr algo_tb = nullptr);
+
+    void sr_graph(GroupoidPtr, std::string filename);
 };
 
 #endif
