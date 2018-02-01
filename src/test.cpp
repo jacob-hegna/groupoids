@@ -3,9 +3,30 @@
 #include "algorithm.h"
 #include "groupoid.h"
 
+#include <iostream>
 #include <vector>
 
 namespace Test {
+    bool run_all_tests() {
+        bool success = true;
+
+        std::cout << "[test] [Lorrie's random groupoid] ";
+        if(!(success &= Test::lorries_rnd_gpd())) {
+            std::cout << "[FAILURE]" << std::endl;
+        } else {
+            std::cout << "[PASS]" << std::endl;
+        }
+
+        std::cout << "[test] [Z5] ";
+        if(!(success &= Test::lorries_rnd_gpd())) {
+            std::cout << "[FAILURE]" << std::endl;
+        } else {
+            std::cout << "[PASS]" << std::endl;
+        }
+
+        return success;
+    }
+
     bool lorries_rnd_gpd() {
         std::vector<std::vector<uint>> lorries_table = {{
             {3, 4, 1, 0, 4},
