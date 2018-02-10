@@ -8,40 +8,12 @@
 #include "test.h"
 #include "parser.h"
 
-void search_nsr(uint size, uint iterations, bool verbose) {
-    uint separating = 0;
-    uint i = 0;
-    while(i < iterations || iterations == 0) {
-        auto groupoid = Groupoid::from_random(size);
-        auto algo_tb  = std::make_shared<Groupoid>(size);
-        bool nsr = Algorithm::check_sr(groupoid, algo_tb);
-        
-        if(nsr) {
-            ++separating;
-
-            std::cout << "(" << separating << "/" << i << ") - "
-                      << (double)separating/(double)i << "%"
-                      << std::endl;
-
-            std::cout << groupoid->to_str() << std::endl;
-
-            if(verbose) {
-                std::cout << std::endl << algo_tb->to_str() << std::endl;
-            }
-
-            std::cout << std::endl;
-        }
-
-        ++i;
-    }
-}
-
 int main(int argc, char* argv[]) {
     // default values
     uint size            = 4;
     uint iterations      = 1;
     bool help_shown      = false;
-    auto help_short      = "Usage: " + std::string(argv[0]) + " [-hvn:i:t:o:] [test|random|nsr-compute|nsr-graph]";
+    auto help_short      = "Usage: " + std::string(argv[0]) + " [-hn:i:] [test|generate-random|generate-sr|nsr-graph]";
     auto help_long       = std::string("\t-h print this message\n")
                          + std::string("\t-n size of the groupoids to consider\n")
                          + std::string("\t-i number of iterations to run (if 0, continue indefinitely)\n");
