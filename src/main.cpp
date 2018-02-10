@@ -1,3 +1,4 @@
+#include <cstring>
 #include <iostream>
 #include <unistd.h>
 #include <thread>
@@ -101,9 +102,7 @@ int main(int argc, char* argv[]) {
     }
     else if(strcmp(argv[optind], "nsr-graph") == 0)
     {
-
         auto gpd = parse_groupoid(std::cin);
-        std::cout << gpd->to_str() << std::endl;
         Algorithm::sr_graph(gpd, std::cout, true);
     }
 }

@@ -71,7 +71,7 @@ GroupoidPtr parse_groupoid(std::istream& in) {
     while(std::getline(in, line)) {
         lines.push_back(line);
     }
-
+    
     return parse_groupoid_string(lines);
 }
 

@@ -1,7 +1,7 @@
 #ifndef __GROUPOID_SR_H_
 #define __GROUPOID_SR_H_
 
-#include "Groupoid.h"
+#include "groupoid.h"
 #include <ostream>
 
 namespace Algorithm {
