@@ -2,7 +2,7 @@
 
 #include <map>
 #include <iostream>
-#include <fstream>
+#include <ostream>
 #include <vector>
 
 namespace Algorithm {
@@ -69,7 +69,7 @@ namespace Algorithm {
         return (bad_pairs != max_steps);
     }
 
-    void sr_graph(GroupoidPtr gpd, std::string filename) {
+    void sr_graph(GroupoidPtr gpd, std::ostream& out, bool rho) {
         auto to_vert = [] (int i, int j) -> std::string {
             if(i == j) {
                 return "∆" + std::to_string(i);
@@ -81,13 +81,12 @@ namespace Algorithm {
             }
         };
 
-        std::ofstream file(filename);
-        file << "digraph G {"
+        out << "digraph G {"
                   << std::endl
                   << "\tedge [fontsize=10]"
                   << std::endl;
 
-        if(file.is_open()) {
+        if(out.good()) {
             for(int i = 0; i < gpd->size(); ++i) {
                 for(int j = 0; j < gpd->size(); ++j) {
                     if(i >= j) continue;
@@ -95,43 +94,24 @@ namespace Algorithm {
                     std::map<std::string, std::string> edges;
                     for(int k = 0; k < gpd->size(); ++k) {
                         edges[to_vert(gpd->get(k, i), gpd->get(k, j))] += "λ<SUB>" + std::to_string(k) + "</SUB>, ";
-                        edges[to_vert(gpd->get(i, k), gpd->get(j, k))] += "ρ<SUB>" + std::to_string(k) + "</SUB>, ";
-/*
-                        file << "\t\""
-                             << to_vert(i, j)
-                             << "\" -> \""
-                             << to_vert(gpd->get(k, i), gpd->get(k, j))
-                             << "\" [label=<F<SUB>"
-                             << k
-                             << "</SUB>>];"
-                             << std::endl;
-
-                        file << "\t\""
-                             << to_vert(i, j)
-                             << "\" -> \""
-                             << to_vert(gpd->get(i, k), gpd->get(j, k))
-                             << "\" [label=<G<SUB>"
-                             << k
-                             << "</SUB>>];"
-                             << std::endl;*/
+                        if(rho) edges[to_vert(gpd->get(i, k), gpd->get(j, k))] += "ρ<SUB>" + std::to_string(k) + "</SUB>, ";
                     }
 
                     for (const auto& kv : edges) {
-                        file << "\t\""
-                             << to_vert(i, j)
-                             << "\" -> \""
-                             << kv.first
-                             << "\" [label=<{"
-                             << kv.second.substr(0, kv.second.length() - 2)
-                             << "}>];"
-                             << std::endl;
+                        out << "\t\""
+                            << to_vert(i, j)
+                            << "\" -> \""
+                            << kv.first
+                            << "\" [label=<{"
+                            << kv.second.substr(0, kv.second.length() - 2)
+                            << "}>];"
+                            << std::endl;
                     }
                 }
             }
         }
 
-        file << "}" << std::endl;
-        file.close();
+        out << "}" << std::endl;
     }
 
 } // end of namespace Algorithm
