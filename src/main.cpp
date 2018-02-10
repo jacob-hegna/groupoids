@@ -35,7 +35,6 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    // this might be the problem
     if(optind >= argc && !help_shown) {
         std::cout << help_short << std::endl;
         return 1;
@@ -52,7 +51,7 @@ int main(int argc, char* argv[]) {
             auto groupoid = Groupoid::from_random(size);
             std::cout << groupoid->to_str() << std::endl;
 
-            if(i != iterations) {
+            if(i != iterations - 1) {
                 std::cout << std::endl;
             }
         }
